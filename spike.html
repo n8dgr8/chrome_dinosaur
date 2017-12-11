@@ -1,0 +1,67 @@
+<html>
+
+
+<head>
+
+    <script type="text/javascript">
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        class Tone {
+            constructor(frequency, duration) {
+                this.frequency = frequency;
+                this.duration = duration;
+            }
+        }
+
+        async function playTones(tones) {
+            var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            var oscillator = audioContext.createOscillator();
+            oscillator.connect(audioContext.destination);
+
+            oscillator.type = "square";
+
+            oscillator.start();
+
+            for(let tone of tones) {
+                oscillator.frequency.value = tone.frequency;
+                await sleep(tone.duration);
+            };
+
+            oscillator.stop();
+        }
+
+        var tones = [];
+
+        tones.push(new Tone(1900, 300));
+        tones.push(new Tone(1200, 10));
+        tones.push(new Tone(1900, 300));
+        tones.push(new Tone(1200, 30));
+
+        const ZERO = 1300;
+        const ONE = 1100;
+
+        //  95d = 101 1111
+
+        tones.push(new Tone(ONE, 30));
+        tones.push(new Tone(ONE, 30));
+        tones.push(new Tone(ONE, 30));
+        tones.push(new Tone(ONE, 30));
+
+        tones.push(new Tone(ONE, 30));
+        tones.push(new Tone(ZERO, 30));
+        tones.push(new Tone(ONE, 30));
+
+        tones.push(new Tone(1100, 30));
+
+        tones.push(new Tone(1200, 30));
+
+        playTones(tones);
+
+    </script>
+
+</head>
+</html>
